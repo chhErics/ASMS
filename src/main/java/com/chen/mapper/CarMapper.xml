@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.CarMapper">
+
+    <select id="queryAllCar" resultMap="CarMap">
+        SELECT `vin`,`en`,c.`model` cmodel,m.name mname
+             ,`color`,`isSell`,`displacement`,`price`,c.`deNo` cdeNo
+             ,d.address daddress,d.name dname
+        FROM `car` c
+        INNER JOIN `model` m ON c.model = m.model
+        INNER JOIN `depository` d ON c.deNo=d.deNo
+    </select>
+    <resultMap id="CarMap" type="Car">
+        <result property="vin" column="vin"/>
+        <result property="en" column="en"/>
+        <result property="color" column="color"/>
+        <result property="isSell" column="isSell"/>
+        <result property="displacement" column="displacement"/>
+        <result property="price" column="price"/>
+        <association property="model" javaType="Model">
+            <result property="model" column="cmodel"/>
+            <result property="name" column="mname"/>
+        </association>
+        <association property="depository" javaType="Depository">
+            <result property="deNo" column="cdeNo"/>
+            <result property="address" column="daddress"/>
+            <result property="name" column="dname"/>
+        </association>
+    </resultMap>
+
+    <insert id="addCar" parameterType="Car">
+        INSERT INTO `car` (`vin`,`en`,`model`,`color`,`displacement`,`price`,`deNo`)
+        VALUES(#{vin},#{en},#{model.model},#{color},#{displacement},#{price},#{depository.deNo})
+    </insert>
+
+    <select id="queryCarByIdPartly1" resultType="Car">
+        SELECT vin,color,displacement,price
+        FROM car
+        WHERE vin = #{vin}
+    </select>
+
+    <update id="updateCarPartly1" parameterType="Car">
+        UPDATE
+        `car`
+        SET `color`=#{color},`displacement`=#{displacement},`price`=#{price}
+        WHERE vin = #{vin}
+    </update>
+
+    <update id="updateUnsale">
+        UPDATE
+        `car`
+        SET `isSell`='0'
+        WHERE vin = #{vin}
+    </update>
+
+    <update id="updateSale">
+        UPDATE
+        `car`
+        SET `isSell`='1'
+        WHERE vin = #{vin}
+    </update>
+
+    <update id="updateCarModelAdd">
+        UPDATE model m, car c
+        SET sale=sale+1,stock=stock-1
+        WHERE c.vin = #{vin} AND c.model=m.model
+    </update>
+
+    <update id="updateCarModelMinus">
+        UPDATE model m, car c
+        SET sale=sale-1,stock=stock+1
+        WHERE c.vin = #{vin} AND c.model=m.model
+    </update>
+
+</mapper>

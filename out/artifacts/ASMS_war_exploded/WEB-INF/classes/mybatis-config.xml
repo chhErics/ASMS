@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    配置数据源，交给spring做-->
+<!--    <environments default="development">-->
+<!--        <environment id="development">-->
+<!--            <transactionManager type="JDBC"/>-->
+<!--            &lt;!&ndash; 配置数据库连接信息 &ndash;&gt;-->
+<!--            <dataSource type="POOLED">-->
+<!--                <property name="driver" value="com.mysql.jdbc.Driver"/>-->
+<!--                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>-->
+<!--                <property name="username" value="root"/>-->
+<!--                <property name="password" value="XDP"/>-->
+<!--            </dataSource>-->
+<!--        </environment>-->
+<!--    </environments>-->
+
+    <typeAliases>
+        <package name="com.chen.pojo"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper class="com.chen.mapper.AdminMapper"/>
+        <mapper class="com.chen.mapper.EmployeeMapper"/>
+        <mapper class="com.chen.mapper.DepositoryMapper"/>
+        <mapper class="com.chen.mapper.ModelMapper"/>
+        <mapper class="com.chen.mapper.CustomerMapper"/>
+        <mapper class="com.chen.mapper.CarMapper"/>
+        <mapper class="com.chen.mapper.OrderMapper"/>
+    </mappers>
+
+</configuration>

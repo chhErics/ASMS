@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.OrderMapper">
+
+    <select id="queryAllOrder" resultMap="OrderMap">
+        SELECT o.orderId oId,o.vin ovin,o.employeeId oemployeeId,
+               e.name ename,o.customerId ocustomerId,cus.name cusname,
+               o.dealTime odealTime,o.price oprice
+        FROM `Order` o
+        INNER JOIN `car` c ON o.vin=c.vin
+        INNER JOIN `employee` e ON o.employeeId=e.employeeId
+        INNER JOIN `customer` cus ON o.customerId=cus.customerId
+    </select>
+    <resultMap id="OrderMap" type="Order">
+        <result property="orderId" column="oId"/>
+        <result property="vin" column="ovin"/>
+        <result property="employeeId" column="oemployeeId"/>
+        <result property="employeeName" column="ename"/>
+        <result property="customerId" column="ocustomerId"/>
+        <result property="customerName" column="cusname"/>
+        <result property="dealTime" column="odealTime"/>
+        <result property="price" column="oprice"/>
+    </resultMap>
+
+    <delete id="deleteOrderById">
+        DELETE
+        FROM `order`
+        WHERE `orderId`=#{orderId}
+    </delete>
+
+    <insert id="addOrder" parameterType="Order">
+        INSERT INTO `order`
+        VALUES(#{orderId},#{vin},#{employeeId},#{customerId},#{dealTime},#{price})
+    </insert>
+
+    <select id="queryOrderByVin" resultType="Order">
+        select *
+        from `order`
+        where vin=#{vin}
+    </select>
+
+    <update id="updateOrderPriceById">
+        UPDATE `order`
+        SET price = #{price}
+        WHERE `orderId` = #{orderId}
+    </update>
+
+</mapper>
